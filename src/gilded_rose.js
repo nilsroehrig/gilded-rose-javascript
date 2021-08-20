@@ -27,7 +27,11 @@ function isNotAgedBrie (item) {
 }
 
 function isNotBackstagePasses (item) {
-  return item.name !== 'Backstage passes to a TAFKAL80ETC concert'
+  return !isBackstagePasses(item)
+}
+
+function isBackstagePasses (item) {
+  return item.name === 'Backstage passes to a TAFKAL80ETC concert'
 }
 
 function update_quality () {
@@ -42,7 +46,7 @@ function update_quality () {
     } else {
       if (item.quality < 50) {
         item.quality = item.quality + 1
-        if (item.name == 'Backstage passes to a TAFKAL80ETC concert') {
+        if (isBackstagePasses(item)) {
           if (item.sell_in < 11) {
             if (item.quality < 50) {
               item.quality = item.quality + 1
