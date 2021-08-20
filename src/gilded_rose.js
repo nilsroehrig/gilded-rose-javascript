@@ -22,24 +22,12 @@ function isSulfuras (item) {
   return item.name === 'Sulfuras, Hand of Ragnaros'
 }
 
-function isNotSulfuras (item) {
-  return !isSulfuras(item)
-}
-
-function isNotAgedBrie (item) {
-  return item.name !== 'Aged Brie'
-}
-
-function isNotBackstagePasses (item) {
-  return !isBackstagePasses(item)
+function isAgedBrie (item) {
+  return item.name === 'Aged Brie'
 }
 
 function isBackstagePasses (item) {
   return item.name === 'Backstage passes to a TAFKAL80ETC concert'
-}
-
-function isRegular (item) {
-  return isNotBackstagePasses(item) && isNotAgedBrie(item) && isNotSulfuras(item)
 }
 
 function updateBackstagePasses (item) {
@@ -57,6 +45,20 @@ function updateBackstagePasses (item) {
   item.sell_in--
 }
 
+function updateAgedBrie (item) {
+  if (item.quality < 50) {
+    item.quality = item.quality + 1
+  }
+
+  if (item.sell_in <= 0) {
+    if (item.quality < 50) {
+      item.quality = item.quality + 1
+    }
+  }
+
+  item.sell_in--
+}
+
 function update_quality () {
   for (let i = 0; i < items.length; i++) {
     let item = items[i]
@@ -70,23 +72,18 @@ function update_quality () {
       continue
     }
 
-    if (isRegular(item) && item.quality > 0) {
+    if (isAgedBrie(item)) {
+      updateAgedBrie(item)
+      continue
+    }
+
+    if (item.quality > 0) {
       item.quality = item.quality - 1
-    } else {
-      if (item.quality < 50) {
-        item.quality = item.quality + 1
-      }
     }
 
     if (item.sell_in <= 0) {
-      if (isNotAgedBrie(item)) {
-        if (item.quality > 0) {
-          item.quality = item.quality - 1
-        }
-      } else {
-        if (item.quality < 50) {
-          item.quality = item.quality + 1
-        }
+      if (item.quality > 0) {
+        item.quality = item.quality - 1
       }
     }
 
