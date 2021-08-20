@@ -39,12 +39,20 @@ class EnhancedItem {
     this.#item.quality = Math.max(0, this.#item.quality - by)
   }
 
+  devaluate () {
+    this.#item.quality = 0
+  }
+
   ageBy (by = 1) {
     this.#item.sell_in = this.#item.sell_in - by
   }
 
+  isDueWithin (days = 1) {
+    return this.#item.sell_in < days
+  }
+
   isOverdue () {
-    return this.#item.sell_in < 0
+    return this.isDueWithin(0)
   }
 
   update () {
@@ -57,11 +65,41 @@ class AgedBrie extends EnhancedItem {
   /**
    * @param {Item} item
    */
-  constructor (item) {super(item)}
+  constructor (item) {
+    super(item)
+  }
 
-  update() {
+  update () {
     this.ageBy(1)
     this.increaseQualityBy(this.isOverdue() ? 2 : 1)
+  }
+}
+
+class BackstagePasses extends EnhancedItem {
+  /**
+   * @param {Item} item
+   */
+  constructor (item) {
+    super(item)
+  }
+
+  update () {
+    this.ageBy(1)
+
+    if (this.isOverdue()) {
+      this.devaluate()
+      return
+    }
+
+    this.increaseQualityBy(1)
+
+    if (this.isDueWithin(10)) {
+      this.increaseQualityBy(1)
+    }
+
+    if (this.isDueWithin(5)) {
+      this.increaseQualityBy(1)
+    }
   }
 }
 
@@ -77,24 +115,6 @@ function isBackstagePasses (item) {
   return item.name === 'Backstage passes to a TAFKAL80ETC concert'
 }
 
-function updateBackstagePasses (item) {
-  item.sell_in--
-
-  if (item.sell_in < 0) {
-    item.quality = 0
-    return
-  }
-
-  item.quality = Math.min(item.quality + 1, 50)
-
-  if (item.sell_in < 10) {
-    item.quality = Math.min(item.quality + 1, 50)
-  }
-  if (item.sell_in < 5) {
-    item.quality = Math.min(item.quality + 1, 50)
-  }
-}
-
 function update_quality () {
   items.forEach(item => {
     if (isSulfuras(item)) {
@@ -102,7 +122,7 @@ function update_quality () {
     }
 
     if (isBackstagePasses(item)) {
-      updateBackstagePasses(item)
+      new BackstagePasses(item).update()
       return
     }
 
