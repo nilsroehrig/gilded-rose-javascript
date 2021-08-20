@@ -46,17 +46,11 @@ function updateBackstagePasses (item) {
 }
 
 function updateAgedBrie (item) {
-  if (item.quality < 50) {
-    item.quality = item.quality + 1
-  }
-
-  if (item.sell_in <= 0) {
-    if (item.quality < 50) {
-      item.quality = item.quality + 1
-    }
-  }
-
   item.sell_in--
+  item.quality = Math.min(item.quality + 1, 50)
+  if (item.sell_in < 0) {
+    item.quality = Math.min(item.quality + 1, 50)
+  }
 }
 
 function update_quality () {
