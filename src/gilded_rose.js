@@ -18,8 +18,12 @@ items.push(new Item('Conjured Mana Cake', 3, 6))
 // Do not touch above, because Goblin!
 // --------------------------------------------------------------------------------------------
 
+function isSulfuras (item) {
+  return item.name === 'Sulfuras, Hand of Ragnaros'
+}
+
 function isNotSulfuras (item) {
-  return item.name !== 'Sulfuras, Hand of Ragnaros'
+  return !isSulfuras(item)
 }
 
 function isNotAgedBrie (item) {
@@ -51,15 +55,14 @@ function increaseBackstagePassesQuality (item) {
   }
 }
 
-function updateSellIn (item) {
-  if (isNotSulfuras(item)) {
-    item.sell_in = item.sell_in - 1
-  }
-}
-
 function update_quality () {
   for (let i = 0; i < items.length; i++) {
     let item = items[i]
+
+    if (isSulfuras(item)) {
+      continue
+    }
+
     if (isRegular(item) && item.quality > 0) {
       item.quality = item.quality - 1
     } else {
@@ -75,9 +78,7 @@ function update_quality () {
       if (isNotAgedBrie(item)) {
         if (isNotBackstagePasses(item)) {
           if (item.quality > 0) {
-            if (isNotSulfuras(item)) {
-              item.quality = item.quality - 1
-            }
+            item.quality = item.quality - 1
           }
         } else {
           item.quality = item.quality - item.quality
@@ -89,7 +90,7 @@ function update_quality () {
       }
     }
 
-    updateSellIn(item)
+    item.sell_in = item.sell_in - 1
   }
 }
 
