@@ -18,6 +18,52 @@ items.push(new Item('Conjured Mana Cake', 3, 6))
 // Do not touch above, because Goblin!
 // --------------------------------------------------------------------------------------------
 
+class EnhancedItem {
+  /**
+   * @type {Item}
+   */
+  #item = null
+
+  /**
+   * @param {Item} item
+   */
+  constructor (item) {
+    this.#item = item
+  }
+
+  increaseQualityBy (by = 1) {
+    this.#item.quality = Math.min(50, this.#item.quality + by)
+  }
+
+  decreaseQualityBy (by = 1) {
+    this.#item.quality = Math.max(0, this.#item.quality - by)
+  }
+
+  ageBy (by = 1) {
+    this.#item.sell_in = this.#item.sell_in - by
+  }
+
+  isOverdue () {
+    return this.#item.sell_in < 0
+  }
+
+  update () {
+    this.ageBy(1)
+    this.decreaseQualityBy(this.isOverdue() ? 2 : 1)
+  }
+}
+
+// class AgedBrie extends EnhancedItem {
+//   /**
+//    * @param {Item} item
+//    */
+//   constructor (item) {super(item)}
+//
+//   update() {
+//
+//   }
+// }
+
 function isSulfuras (item) {
   return item.name === 'Sulfuras, Hand of Ragnaros'
 }
@@ -58,16 +104,6 @@ function updateAgedBrie (item) {
   }
 }
 
-function updateRegular (item) {
-  item.sell_in--
-
-  item.quality = Math.max(item.quality - 1, 0)
-
-  if (item.sell_in < 0) {
-    item.quality = Math.max(item.quality - 1, 0)
-  }
-}
-
 function update_quality () {
   items.forEach(item => {
     if (isSulfuras(item)) {
@@ -84,7 +120,7 @@ function update_quality () {
       return
     }
 
-    updateRegular(item)
+    new EnhancedItem(item).update()
   })
 }
 
