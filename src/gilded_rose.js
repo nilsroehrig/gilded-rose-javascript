@@ -19,14 +19,8 @@ items.push(new Item('Conjured Mana Cake', 3, 6))
 // --------------------------------------------------------------------------------------------
 
 class EnhancedItem {
-  /**
-   * @type {Item}
-   */
   #item = null
 
-  /**
-   * @param {Item} item
-   */
   constructor (item) {
     this.#item = item
   }
@@ -62,9 +56,6 @@ class EnhancedItem {
 }
 
 class AgedBrie extends EnhancedItem {
-  /**
-   * @param {Item} item
-   */
   constructor (item) {
     super(item)
   }
@@ -76,9 +67,6 @@ class AgedBrie extends EnhancedItem {
 }
 
 class BackstagePasses extends EnhancedItem {
-  /**
-   * @param {Item} item
-   */
   constructor (item) {
     super(item)
   }
@@ -104,10 +92,6 @@ class BackstagePasses extends EnhancedItem {
 }
 
 class LegendaryItem extends EnhancedItem {
-  /**
-   *
-   * @param {Item} item
-   */
   constructor (item) {
     super(item)
   }
@@ -127,25 +111,15 @@ function isBackstagePasses (item) {
   return item.name === 'Backstage passes to a TAFKAL80ETC concert'
 }
 
+function toEnhancedItem(item) {
+  if(isSulfuras(item)) return new LegendaryItem(item)
+  if(isBackstagePasses(item)) return new BackstagePasses(item)
+  if(isAgedBrie(item)) return new AgedBrie(item)
+  return new EnhancedItem(item)
+}
+
 function update_quality () {
-  items.forEach(item => {
-    if (isSulfuras(item)) {
-      new LegendaryItem(item).update()
-      return
-    }
-
-    if (isBackstagePasses(item)) {
-      new BackstagePasses(item).update()
-      return
-    }
-
-    if (isAgedBrie(item)) {
-      new AgedBrie(item).update()
-      return
-    }
-
-    new EnhancedItem(item).update()
-  })
+  items.map(toEnhancedItem).forEach(item => item.update())
 }
 
 module.exports = { update_quality, items }
