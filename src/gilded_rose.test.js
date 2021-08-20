@@ -1,4 +1,4 @@
-const { update_quality } = require('./gilded_rose')
+const { update_quality, items } = require('./gilded_rose')
 
 it('works', () => {
   console.log('works')

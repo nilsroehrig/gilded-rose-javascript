@@ -18,7 +18,7 @@ items.push(new Item('Conjured Mana Cake', 3, 6))
 // Do not touch above, because Goblin!
 // --------------------------------------------------------------------------------------------
 
-function update_quality (items = []) {
+function update_quality () {
   for (let i = 0; i < items.length; i++) {
     if (items[i].name != 'Aged Brie' && items[i].name != 'Backstage passes to a TAFKAL80ETC concert') {
       if (items[i].quality > 0) {
@@ -66,4 +66,4 @@ function update_quality (items = []) {
   }
 }
 
-module.exports = { update_quality }
+module.exports = { update_quality, items }
