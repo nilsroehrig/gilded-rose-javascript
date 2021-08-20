@@ -39,6 +39,7 @@ function updateBackstagePasses (item) {
   }
 
   item.quality = Math.min(item.quality + 1, 50)
+
   if (item.sell_in < 10) {
     item.quality = Math.min(item.quality + 1, 50)
   }
@@ -49,24 +50,22 @@ function updateBackstagePasses (item) {
 
 function updateAgedBrie (item) {
   item.sell_in--
+
   item.quality = Math.min(item.quality + 1, 50)
+
   if (item.sell_in < 0) {
     item.quality = Math.min(item.quality + 1, 50)
   }
 }
 
 function updateRegular (item) {
-  if (item.quality > 0) {
-    item.quality = item.quality - 1
-  }
+  item.sell_in--
 
-  if (item.sell_in <= 0) {
-    if (item.quality > 0) {
-      item.quality = item.quality - 1
-    }
-  }
+  item.quality = Math.max(item.quality - 1, 0)
 
-  item.sell_in = item.sell_in - 1
+  if (item.sell_in < 0) {
+    item.quality = Math.max(item.quality - 1, 0)
+  }
 }
 
 function update_quality () {
