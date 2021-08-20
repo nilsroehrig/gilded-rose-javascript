@@ -42,27 +42,17 @@ function isRegular (item) {
   return isNotBackstagePasses(item) && isNotAgedBrie(item) && isNotSulfuras(item)
 }
 
-function increaseBackstagePassesQuality (item) {
-  if (item.sell_in < 11) {
-    if (item.quality < 50) {
-      item.quality = item.quality + 1
-    }
-  }
-  if (item.sell_in < 6) {
-    if (item.quality < 50) {
-      item.quality = item.quality + 1
-    }
-  }
-}
-
 function updateBackstagePasses (item) {
   if (item.sell_in <= 0) {
     item.quality = 0
   } else {
-    if (item.quality < 50) {
-      item.quality = item.quality + 1
+    item.quality = Math.min(item.quality + 1, 50)
+    if (item.sell_in < 11) {
+      item.quality = Math.min(item.quality + 1, 50)
     }
-    increaseBackstagePassesQuality(item)
+    if (item.sell_in < 6) {
+      item.quality = Math.min(item.quality + 1, 50)
+    }
   }
   item.sell_in--
 }
