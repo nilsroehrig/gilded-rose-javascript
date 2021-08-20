@@ -31,18 +31,20 @@ function isBackstagePasses (item) {
 }
 
 function updateBackstagePasses (item) {
-  if (item.sell_in <= 0) {
-    item.quality = 0
-  } else {
-    item.quality = Math.min(item.quality + 1, 50)
-    if (item.sell_in < 11) {
-      item.quality = Math.min(item.quality + 1, 50)
-    }
-    if (item.sell_in < 6) {
-      item.quality = Math.min(item.quality + 1, 50)
-    }
-  }
   item.sell_in--
+
+  if (item.sell_in < 0) {
+    item.quality = 0
+    return
+  }
+
+  item.quality = Math.min(item.quality + 1, 50)
+  if (item.sell_in < 10) {
+    item.quality = Math.min(item.quality + 1, 50)
+  }
+  if (item.sell_in < 5) {
+    item.quality = Math.min(item.quality + 1, 50)
+  }
 }
 
 function updateAgedBrie (item) {
