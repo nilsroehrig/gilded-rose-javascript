@@ -53,16 +53,17 @@ class EnhancedItem {
   }
 }
 
-// class AgedBrie extends EnhancedItem {
-//   /**
-//    * @param {Item} item
-//    */
-//   constructor (item) {super(item)}
-//
-//   update() {
-//
-//   }
-// }
+class AgedBrie extends EnhancedItem {
+  /**
+   * @param {Item} item
+   */
+  constructor (item) {super(item)}
+
+  update() {
+    this.ageBy(1)
+    this.increaseQualityBy(this.isOverdue() ? 2 : 1)
+  }
+}
 
 function isSulfuras (item) {
   return item.name === 'Sulfuras, Hand of Ragnaros'
@@ -94,16 +95,6 @@ function updateBackstagePasses (item) {
   }
 }
 
-function updateAgedBrie (item) {
-  item.sell_in--
-
-  item.quality = Math.min(item.quality + 1, 50)
-
-  if (item.sell_in < 0) {
-    item.quality = Math.min(item.quality + 1, 50)
-  }
-}
-
 function update_quality () {
   items.forEach(item => {
     if (isSulfuras(item)) {
@@ -116,7 +107,7 @@ function update_quality () {
     }
 
     if (isAgedBrie(item)) {
-      updateAgedBrie(item)
+      new AgedBrie(item).update()
       return
     }
 
