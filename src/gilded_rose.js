@@ -55,6 +55,18 @@ function increaseBackstagePassesQuality (item) {
   }
 }
 
+function updateBackstagePasses (item) {
+  if (item.sell_in <= 0) {
+    item.quality = 0
+  } else {
+    if (item.quality < 50) {
+      item.quality = item.quality + 1
+    }
+    increaseBackstagePassesQuality(item)
+  }
+  item.sell_in--
+}
+
 function update_quality () {
   for (let i = 0; i < items.length; i++) {
     let item = items[i]
@@ -63,25 +75,23 @@ function update_quality () {
       continue
     }
 
+    if (isBackstagePasses(item)) {
+      updateBackstagePasses(item)
+      continue
+    }
+
     if (isRegular(item) && item.quality > 0) {
       item.quality = item.quality - 1
     } else {
       if (item.quality < 50) {
         item.quality = item.quality + 1
-        if (isBackstagePasses(item)) {
-          increaseBackstagePassesQuality(item)
-        }
       }
     }
 
     if (item.sell_in <= 0) {
       if (isNotAgedBrie(item)) {
-        if (isNotBackstagePasses(item)) {
-          if (item.quality > 0) {
-            item.quality = item.quality - 1
-          }
-        } else {
-          item.quality = item.quality - item.quality
+        if (item.quality > 0) {
+          item.quality = item.quality - 1
         }
       } else {
         if (item.quality < 50) {
