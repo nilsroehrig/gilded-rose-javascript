@@ -20,8 +20,20 @@ it('updates quality and sell_in date for each iteration', () => {
   expect(items[3].quality).toBe(80)
   expect(items[4].sell_in).toBe(14)
   expect(items[4].quality).toBe(21)
+  expect(items[5].sell_in).toBe(2)
+  expect(items[5].quality).toBe(4)
 
-  times(4, update_quality)
+  update_quality()
+
+  expect(items[5].sell_in).toBe(1)
+  expect(items[5].quality).toBe(2)
+
+  update_quality()
+
+  expect(items[5].sell_in).toBe(0)
+  expect(items[5].quality).toBe(0)
+
+  times(2, update_quality)
 
   expect(items[0].sell_in).toBe(5)
   expect(items[0].quality).toBe(15)
@@ -33,6 +45,8 @@ it('updates quality and sell_in date for each iteration', () => {
   expect(items[3].quality).toBe(80)
   expect(items[4].sell_in).toBe(10)
   expect(items[4].quality).toBe(25)
+  expect(items[5].sell_in).toBe(-2)
+  expect(items[5].quality).toBe(0)
 
   times(5, update_quality)
 

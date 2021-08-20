@@ -20,9 +20,11 @@ items.push(new Item('Conjured Mana Cake', 3, 6))
 
 class EnhancedItem {
   #item = null
+  #isConjured = false
 
   constructor (item) {
     this.#item = item
+    this.#isConjured = item.name.toLowerCase().includes('conjured')
   }
 
   increaseQualityBy (by = 1) {
@@ -30,7 +32,8 @@ class EnhancedItem {
   }
 
   decreaseQualityBy (by = 1) {
-    this.#item.quality = Math.max(0, this.#item.quality - by)
+    const step = this.#isConjured ? by * 2 : by
+    this.#item.quality = Math.max(0, this.#item.quality - step)
   }
 
   devaluate () {
