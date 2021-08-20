@@ -26,10 +26,14 @@ function isNotAgedBrie (item) {
   return item.name !== 'Aged Brie'
 }
 
+function isNotBackstagePasses (item) {
+  return item.name !== 'Backstage passes to a TAFKAL80ETC concert'
+}
+
 function update_quality () {
   for (let i = 0; i < items.length; i++) {
     let item = items[i]
-    if (isNotAgedBrie(item) && item.name != 'Backstage passes to a TAFKAL80ETC concert') {
+    if (isNotAgedBrie(item) && isNotBackstagePasses(item)) {
       if (item.quality > 0) {
         if (isNotSulfuras(item)) {
           item.quality = item.quality - 1
@@ -57,7 +61,7 @@ function update_quality () {
     }
     if (item.sell_in < 0) {
       if (isNotAgedBrie(item)) {
-        if (item.name != 'Backstage passes to a TAFKAL80ETC concert') {
+        if (isNotBackstagePasses(item)) {
           if (item.quality > 0) {
             if (isNotSulfuras(item)) {
               item.quality = item.quality - 1
