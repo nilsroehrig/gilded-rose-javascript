@@ -22,10 +22,14 @@ function isNotSulfuras (item) {
   return item.name !== 'Sulfuras, Hand of Ragnaros'
 }
 
+function isNotAgedBrie (item) {
+  return item.name !== 'Aged Brie'
+}
+
 function update_quality () {
   for (let i = 0; i < items.length; i++) {
     let item = items[i]
-    if (item.name != 'Aged Brie' && item.name != 'Backstage passes to a TAFKAL80ETC concert') {
+    if (isNotAgedBrie(item) && item.name != 'Backstage passes to a TAFKAL80ETC concert') {
       if (item.quality > 0) {
         if (isNotSulfuras(item)) {
           item.quality = item.quality - 1
@@ -52,7 +56,7 @@ function update_quality () {
       item.sell_in = item.sell_in - 1
     }
     if (item.sell_in < 0) {
-      if (item.name != 'Aged Brie') {
+      if (isNotAgedBrie(item)) {
         if (item.name != 'Backstage passes to a TAFKAL80ETC concert') {
           if (item.quality > 0) {
             if (isNotSulfuras(item)) {
