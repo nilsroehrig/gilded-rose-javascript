@@ -51,6 +51,12 @@ function increaseBackstagePassesQuality (item) {
   }
 }
 
+function updateSellIn (item) {
+  if (isNotSulfuras(item)) {
+    item.sell_in = item.sell_in - 1
+  }
+}
+
 function update_quality () {
   for (let i = 0; i < items.length; i++) {
     let item = items[i]
@@ -64,10 +70,8 @@ function update_quality () {
         }
       }
     }
-    if (isNotSulfuras(item)) {
-      item.sell_in = item.sell_in - 1
-    }
-    if (item.sell_in < 0) {
+
+    if (item.sell_in <= 0) {
       if (isNotAgedBrie(item)) {
         if (isNotBackstagePasses(item)) {
           if (item.quality > 0) {
@@ -84,6 +88,8 @@ function update_quality () {
         }
       }
     }
+
+    updateSellIn(item)
   }
 }
 
