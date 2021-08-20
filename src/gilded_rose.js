@@ -1,5 +1,5 @@
 class Item {
-  constructor(name, sell_in, quality) {
+  constructor (name, sell_in, quality) {
     this.name = name
     this.sell_in = sell_in
     this.quality = quality
@@ -34,15 +34,15 @@ function isBackstagePasses (item) {
   return item.name === 'Backstage passes to a TAFKAL80ETC concert'
 }
 
+function isRegular (item) {
+  return isNotBackstagePasses(item) && isNotAgedBrie(item) && isNotSulfuras(item)
+}
+
 function update_quality () {
   for (let i = 0; i < items.length; i++) {
     let item = items[i]
-    if (isNotAgedBrie(item) && isNotBackstagePasses(item)) {
-      if (item.quality > 0) {
-        if (isNotSulfuras(item)) {
-          item.quality = item.quality - 1
-        }
-      }
+    if (isRegular(item) && item.quality > 0) {
+      item.quality = item.quality - 1
     } else {
       if (item.quality < 50) {
         item.quality = item.quality + 1
