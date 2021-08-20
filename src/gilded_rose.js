@@ -103,6 +103,18 @@ class BackstagePasses extends EnhancedItem {
   }
 }
 
+class LegendaryItem extends EnhancedItem {
+  /**
+   *
+   * @param {Item} item
+   */
+  constructor (item) {
+    super(item)
+  }
+
+  update() {}
+}
+
 function isSulfuras (item) {
   return item.name === 'Sulfuras, Hand of Ragnaros'
 }
@@ -118,6 +130,7 @@ function isBackstagePasses (item) {
 function update_quality () {
   items.forEach(item => {
     if (isSulfuras(item)) {
+      new LegendaryItem(item).update()
       return
     }
 
