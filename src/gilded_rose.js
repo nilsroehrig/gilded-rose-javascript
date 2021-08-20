@@ -69,25 +69,23 @@ function updateRegular (item) {
 }
 
 function update_quality () {
-  for (let i = 0; i < items.length; i++) {
-    let item = items[i]
-
+  items.forEach(item => {
     if (isSulfuras(item)) {
-      continue
+      return
     }
 
     if (isBackstagePasses(item)) {
       updateBackstagePasses(item)
-      continue
+      return
     }
 
     if (isAgedBrie(item)) {
       updateAgedBrie(item)
-      continue
+      return
     }
 
     updateRegular(item)
-  }
+  })
 }
 
 module.exports = { update_quality, items }
